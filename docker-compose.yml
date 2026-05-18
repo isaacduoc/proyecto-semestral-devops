@@ -1,0 +1,75 @@
+version: '3.9'
+
+services:
+
+  # FRONTEND
+  frontend:
+    build: ./front_despacho
+    container_name: frontend_container
+
+    ports:
+      - "3000:80"
+
+    depends_on:
+      - backend_despacho
+      - backend_ventas
+
+  # BACKEND DESPACHOS
+  backend_despacho:
+    build: ./back-Despachos_SpringBoot/Springboot-API-REST-DESPACHO
+    container_name: backend_despacho_container
+
+    ports:
+      - "8081:8081"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/appdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+    depends_on:
+      - db
+
+    volumes:
+      - despacho_data:/data
+
+  # BACKEND VENTAS
+  backend_ventas:
+    build: ./back-Ventas_SpringBoot/Springboot-API-REST
+    container_name: backend_ventas_container
+
+    ports:
+      - "8082:8080"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/appdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+    depends_on:
+      - db
+
+    volumes:
+      - ventas_data:/data
+
+  # MYSQL
+  db:
+    image: mysql:8
+    container_name: mysql_container
+
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: appdb
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+
+# VOLUMENES
+
+volumes:
+  mysql_data:
+  despacho_data:
+  ventas_data:
