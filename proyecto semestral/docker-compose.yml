@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # Backend - Ventas
+  api-ventas:
+    image: ${ECR_REGISTRY}/${ECR_REPO_URL_BACKEND_VENTAS}:latest
+    container_name: api-ventas
+    ports:
+      - "8081:8080"
+    restart: always
+
+  # Backend - Despachos
+  api-despachos:
+    image: ${ECR_REGISTRY}/${ECR_REPO_URL_BACKEND_DESPACHOS}:latest
+    container_name: api-despachos
+    ports:
+      - "8082:8080"
+    restart: always
+
+  # Frontend - Despacho
+  tienda-frontend:
+    image: ${ECR_REGISTRY}/${ECR_REPO_URL_FRONTEND}:latest
+    container_name: tienda-frontend
+    ports:
+      - "80:80"
+    restart: always
+    depends_on:
+      - api-ventas
+      - api-despachos
