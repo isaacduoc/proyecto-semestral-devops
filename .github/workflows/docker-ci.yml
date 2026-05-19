@@ -20,22 +20,22 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Frontend
-        run: docker build -t isvvc22/frontend-devops ./front_despacho
+        run: docker build -t isvvc22/frontend-devops:latest ./front_despacho
 
       - name: Push Frontend
-        run: docker push isvvc22/frontend-devops
+        run: docker push isvvc22/frontend-devops:latest
 
       - name: Build Backend Despacho
-        run: docker build -t isvvc22/backend-despacho-devops ./back-Despachos_SpringBoot/Springboot-API-REST-DESPACHO
+        run: docker build -t isvvc22/backend-despacho-devops:latest ./back-Despachos_SpringBoot/Springboot-API-REST-DESPACHO
 
       - name: Push Backend Despacho
-        run: docker push isvvc22/backend-despacho-devops
+        run: docker push isvvc22/backend-despacho-devops:latest
 
       - name: Build Backend Ventas
-        run: docker build -t isvvc22/backend-ventas-devops ./back-Ventas_SpringBoot/Springboot-API-REST
+        run: docker build -t isvvc22/backend-ventas-devops:latest ./back-Ventas_SpringBoot/Springboot-API-REST
 
       - name: Push Backend Ventas
-        run: docker push isvvc22/backend-ventas-devops
+        run: docker push isvvc22/backend-ventas-devops:latest
 
       - name: Deploy en EC2
         uses: appleboy/ssh-action@v1.0.3
@@ -43,10 +43,10 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
-        script: |
-          cd ~/proyecto-semestral-devops/"proyecto semestral"
-          git pull origin deploy
-          docker compose pull
-          docker compose down
-          docker compose up -d
-          docker image prune -f
+          script: |
+            cd ~/proyecto-semestral-devops/"proyecto semestral"
+            git pull origin deploy
+            docker compose pull
+            docker compose down
+            docker compose up -d
+            docker image prune -f
