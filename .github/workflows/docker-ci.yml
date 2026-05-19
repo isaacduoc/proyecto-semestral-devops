@@ -7,7 +7,7 @@ on:
 
 jobs:
   build_push_deploy:
-    runs-on: ec2-user
+    runs-on: ubuntu-latest
 
     steps:
       - name: Descargar codigo
@@ -41,7 +41,7 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
+          username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd ~/proyecto-semestral-devops
